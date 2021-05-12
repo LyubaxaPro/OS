@@ -1,3 +1,4 @@
+
 #include<linux/module.h>
 #include<linux/init.h>
 #include<linux/proc_fs.h>
@@ -18,7 +19,6 @@ unsigned int read_index;
 
 #define COOKIE_POT_SIZE PAGE_SIZE  
 
-// https://elixir.bootlin.com/linux/v4.5/source/fs/seq_file.c#L410
 static int my_show(struct seq_file *m, void *v)
 {
 	printk(KERN_INFO "! Call my_show\n");
@@ -28,7 +28,14 @@ static int my_show(struct seq_file *m, void *v)
 // Это эквивалент printf для реализаций seq_file; он принимает обычную строку формата и дополнительные аргументы значений. 
 // Однако, вы также должны передать ей структуру seq_file, которая передаётся в функцию show. 
 // Если seq_printf возвращает ненулевое значение, это означает, что буфер заполнен и вывод будет отброшен. Большинство реализаций, однако, игнорирует возвращаемое значение.
-	seq_printf(m, "Index is %u, message is %s\n", read_index, str + read_index);
+
+	char* key_str = str + read_index;
+	if (strcmp("abcd", key_str) == 0){
+		seq_printf(m, "You guessed the keyword\nIndex is %u\nmessage is %s\n", read_index, str + read_index);
+	}
+	else{
+		seq_printf(m, "You did not guess the key word\nIndex is %u\nmessage is %s\n", read_index, str + read_index);
+	}
 
 	int len = strlen(str + read_index);
 	if (len)
@@ -64,11 +71,9 @@ static int my_release(struct inode *inode, struct file *file)
 }
 
 static struct file_operations fortune_proc_ops={
-	//.proc_owner = THIS_MODULE,
 	.open = my_open,
 	.release = my_release,
 	.read = seq_read,
-	//.llseek = seq_lseek, 
 	.write = my_write
 };
 
@@ -95,7 +100,7 @@ static int __init fortune_init(void)
 	{
 		vfree(str);
 		printk(KERN_INFO "Error: can't create fortune file\n");
-        return -ENOMEM;cd 02-evdev
+        return -ENOMEM;
 	}	
 
     // создать каталог в файловой системе /proc 
