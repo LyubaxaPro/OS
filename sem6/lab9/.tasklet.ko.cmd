@@ -1,0 +1,1 @@
+cmd_/home/lyubaxapro/OS/sem6/lab9/tasklet.ko := ld -r -m elf_x86_64  -z max-page-size=0x200000  --build-id  -T ./scripts/module-common.lds -o /home/lyubaxapro/OS/sem6/lab9/tasklet.ko /home/lyubaxapro/OS/sem6/lab9/tasklet.o /home/lyubaxapro/OS/sem6/lab9/tasklet.mod.o;  true
