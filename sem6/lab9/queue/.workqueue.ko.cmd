@@ -1,0 +1,1 @@
+cmd_/home/lyubaxapro/OS/sem6/lab9/queue/workqueue.ko := ld -r -m elf_x86_64  -z max-page-size=0x200000  --build-id  -T ./scripts/module-common.lds -o /home/lyubaxapro/OS/sem6/lab9/queue/workqueue.ko /home/lyubaxapro/OS/sem6/lab9/queue/workqueue.o /home/lyubaxapro/OS/sem6/lab9/queue/workqueue.mod.o;  true
